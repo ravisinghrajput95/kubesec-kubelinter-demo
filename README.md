@@ -1,0 +1,1 @@
+## Demo Repository to check Security misconfigurations in Helm chart
