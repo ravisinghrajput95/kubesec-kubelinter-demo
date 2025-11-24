@@ -25,10 +25,17 @@ jobs:
               mv kubesec /usr/local/bin/
               kubesec version
 
-      - name: Scan with Kubesec
+      - name: Generate Manifest file
         run: | 
            helm template demo-app > helm-template.yaml
-           kubesec scan helm-template.yaml --format kubesec-results.sarif
+
+      - name: Run kubesec scanner
+        uses: controlplaneio/kubesec-action@master
+        with:
+          input: helm-template.yaml
+          exit-code: "0"
+          output: kubesec-results.sarif
+        continue-on-error: true
 
       - name: Upload Kubesec scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
